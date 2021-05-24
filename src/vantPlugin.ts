@@ -1,6 +1,28 @@
 import { App } from 'vue'
-import { Button, Tabbar, TabbarItem, NavBar, CellGroup, Field } from 'vant'
-const vantComponent = [Button, Tabbar, TabbarItem, NavBar, CellGroup, Field]
+import {
+  Button,
+  Tabbar,
+  TabbarItem,
+  NavBar,
+  CellGroup,
+  Field,
+  Toast,
+  Form,
+  CountDown,
+  Icon,
+} from 'vant'
+const vantComponent = [
+  Button,
+  Tabbar,
+  TabbarItem,
+  NavBar,
+  CellGroup,
+  Field,
+  Toast,
+  Form,
+  CountDown,
+  Icon,
+]
 export const vantPlguin = {
   install: (app: App): void => {
     vantComponent.forEach((item) => {

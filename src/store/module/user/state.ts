@@ -1,7 +1,7 @@
 export function createState() {
   const state = {
     user: '',
-    token: null,
+    token: null as string | null,
   }
   return state
 }

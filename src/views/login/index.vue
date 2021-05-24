@@ -1,53 +1,85 @@
 <template>
   <div class="login-container">
     <van-nav-bar title="登录" left-arrow @click-left="router.back()" />
-    <van-cell-group>
-      <van-field
-        icon-prefix="toutiao"
-        left-icon="shouji"
-        v-model="formData.mobile"
-        placeholder="请输入用户名"
-        clearable
-      />
-      <van-field
-        left-icon="eye-o"
-        v-model="formData.code"
-        placeholder="请输入验证码"
-      >
-        <template #button>
-          <van-button class="sms-button" round size="mini"
-            >发送验证码</van-button
-          >
-        </template>
-      </van-field>
-      <div class="login-btn-wrap">
-        <van-button class="login-btn" type="primary" block @click="handleLogin"
-          >登录</van-button
+    <van-form>
+      <van-cell-group>
+        <van-field
+          icon-prefix="toutiao"
+          left-icon="shouji"
+          v-model="formData.mobile"
+          name="mobile"
+          placeholder="请输入手机号"
+          maxlength="11"
+          clearable
+          ref="mobileRef"
+        />
+        <van-field
+          left-icon="eye-o"
+          v-model="formData.code"
+          name="code"
+          placeholder="请输入验证码"
+          ref="codeRef"
         >
-      </div>
-    </van-cell-group>
+          <template #button>
+            <van-button
+              class="sms-button"
+              round
+              :type="isSending ? 'default' : 'primary'"
+              size="mini"
+              @click.prevent="sendCode"
+            >
+              <van-count-down
+                v-if="isSending"
+                ref="countDownRef"
+                :time="60 * 1000"
+                format="ss s"
+                :auto-start="false"
+                @finish="isSending = false"
+              />
+              <span v-else>获取验证码</span>
+            </van-button>
+          </template>
+        </van-field>
+        <div class="login-btn-wrap">
+          <van-button class="login-btn" type="primary" block @click="onLogin"
+            >登录</van-button
+          >
+        </div>
+      </van-cell-group>
+    </van-form>
   </div>
 </template>
 
 <script lang="ts">
 import { useRouter } from 'vue-router'
-import { defineComponent, reactive, toRaw } from 'vue'
+import { defineComponent } from 'vue'
 import { useLogin } from './useLogin'
 export default defineComponent({
   setup() {
     const router = useRouter()
-    const formData = reactive({
-      mobile: '13922222222',
-      code: '246810',
-    })
-    const { onLogin } = useLogin()
-    async function handleLogin() {
-      onLogin(toRaw(formData))
-    }
+    const {
+      onLogin,
+      formData,
+      mobileRef,
+      countDownRef,
+      codeRef,
+      checkMobile,
+      checkCode,
+      sendCode,
+      isSending,
+    } = useLogin()
+
     return {
       formData,
       router,
-      handleLogin,
+      isSending,
+      sendCode,
+      checkCode,
+      checkMobile,
+      codeRef,
+      countDownRef,
+      mobileRef,
+      onLogin,
     }
   },
 })
